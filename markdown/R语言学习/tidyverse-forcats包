@@ -1,0 +1,69 @@
+# forcats
+
+## R版本与运行环境信息
+
+```R
+Author:liuzihao
+Date:2021-5-18
+R version 4.0.3 (2020-10-10)
+Platform: x86_64-w64-mingw32/x64 (64-bit)
+Running under: Windows 10 x64 (build 18363)
+```
+
+## 载入相关包
+
+```R
+library("tidyverse")
+```
+
+## forcats包函数的使用
+
+测试数据为：`gss_cat `
+
+#### as_factor()
+
+用法：`as_factor(x, ...)`
+
+将给定的数据转化为因子，适用于字符串、逻辑值、数字.....
+
+x: 需要转换为因子的序列
+
+```R
+nu_seq <- c(1:5) %>% as_factor()
+nu_seq <- c(1:5) %>% as.factor()
+str_seq <- c("T_1","T_2","T_3") %>% as_factor()
+log <- c(T,T,T,F,F,T,F) %>% as_factor()
+
+###
+> str_seq
+[1] T_1 T_2 T_3
+Levels: T_1 T_2 T_3
+> log
+[1] TRUE  TRUE  TRUE  FALSE FALSE TRUE  FALSE
+Levels: FALSE TRUE
+```
+
+#### fct_anon
+
+`fct_anon(f, prefix = "")`
+
+将给定的因子的相应的`index`转换为因子,通过`prefix = `可以指定因子的开头字符
+
+```r
+f <- as_factor(c("b", "b", "a", "c", "c", "c"))
+> f %>% fct_anon()
+[1] 2 2 1 3 3 3
+Levels: 1 2 3
+> f %>% fct_anon(prefix = "ST_")
+[1] ST_3 ST_3 ST_1 ST_2 ST_2 ST_2
+Levels: ST_1 ST_2 ST_3
+#可以指定多个前缀，依次会按照顺序添加
+> f %>% fct_anon(prefix = c("ST1_","ST2_","ST3_"))
+[1] ST3_3 ST3_3 ST2_2 ST1_1 ST1_1 ST1_1
+Levels: ST1_1 ST2_2 ST3_3
+```
+
+
+
+
+
