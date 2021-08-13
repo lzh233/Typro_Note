@@ -31,7 +31,7 @@ https://mp.weixin.qq.com/s/dz0dJNf2slhRNd-9bG188g
 
 
 
-<img src="G:\Desktop\s_note\data\picture\image-20210507103020730.png" alt="image-20210507103020730" style="zoom: 67%;" />
+<img src="https://aironi.oss-cn-beijing.aliyuncs.com/typro_image/image-20210507103020730.png" alt="image-20210507103020730" style="zoom: 67%;" />
 
 理想情况下相同类型和状态的细胞才能构成配对锚点细胞，但是异常的情况也会出现，如上图中query数据集中黑色的细胞团。它在reference数据集没有相同类型的细胞，但是它也找到了锚点配对细胞（红色连线）。Seurat会通过两步过滤这些不正确的锚点（DE）：
 
@@ -213,7 +213,7 @@ p2 <- DimPlot(immune.combine, reduction = "umap", label = TRUE, repel = TRUE)
 p1 + p2
 ```
 
-<img src="G:\Desktop\s_note\data\picture\image-20210507163346844.png" alt="image-20210507163346844" style="zoom:50%;" />
+<img src="https://aironi.oss-cn-beijing.aliyuncs.com/typro_image/image-20210507163346844.png" alt="image-20210507163346844" style="zoom:50%;" />
 
 ```r
 DimPlot(immune.combine, reduction = "umap", split.by = "stim")
@@ -221,7 +221,7 @@ DimPlot(immune.combine, reduction = "umap", split.by = "stim")
 
 
 
-<img src="G:\Desktop\s_note\data\picture\image-20210507163659030.png" alt="image-20210507163659030" style="zoom:50%;" />
+<img src="https://aironi.oss-cn-beijing.aliyuncs.com/typro_image/image-20210507163659030.png" alt="image-20210507163659030" style="zoom:50%;" />
 
 ### 保守基因筛选
 
@@ -281,7 +281,7 @@ immune.combine <- RenameIdents(immune.combine, `0` = "CD14 Mono",
 DimPlot(immune.combined, label = TRUE)
 ```
 
-<img src="G:\Desktop\s_note\data\picture\image-20210511144430105.png" alt="image-20210511144430105" style="zoom:67%;" />
+<img src="https://aironi.oss-cn-beijing.aliyuncs.com/typro_image/image-20210511144430105.png" alt="image-20210511144430105" style="zoom:67%;" />
 
 使用**`Dotplot()`**, 查看保守基因在不同cell中的表达情况
 
@@ -311,7 +311,7 @@ markers.to.plot <- c("CD3D", "CREM", "HSPH1", "SELL", "GIMAP5", "CACYBP", "GNLY"
 DotPlot(object = immune.combine,features = markers.to.plot,cols = c("blue","red"),dot.scale = 8,split.by = "stim")+RotatedAxis()
 ```
 
-<img src="G:\Desktop\s_note\data\picture\image-20210511153037696.png" alt="image-20210511153037696" style="zoom:67%;" />
+<img src="https://aironi.oss-cn-beijing.aliyuncs.com/typro_image/image-20210511153037696.png" alt="image-20210511153037696" style="zoom:67%;" />
 
 ### 不同刺激条件下的显著变化的基因筛选
 
@@ -359,7 +359,7 @@ p.cd14.cell <- LabelPoints(plot = p.cd14.cell, points = genes.to.label, repel = 
 plot_grid(p.t.cell,p.cd14.cell)
 ```
 
-![image-20210511160152415](G:\Desktop\s_note\data\picture\image-20210511160152415.png)
+![image-20210511160152415](https://aironi.oss-cn-beijing.aliyuncs.com/typro_image/image-20210511160152415.png)
 
 查看上述筛选出的基因是否是高变基因, 使用**`FindMarkers()`**函数筛选CTRL和STIM之间的高变基因
 
@@ -407,7 +407,7 @@ FeaturePlot(immune.combine, features = c("ISG15", "CD3D", "IFI6"), split.by = "s
             cols = c("grey", "red"))
 ```
 
-<img src="G:\Desktop\s_note\data\picture\image-20210511163129381.png" alt="image-20210511163129381" style="zoom:67%;" />
+<img src="https://aironi.oss-cn-beijing.aliyuncs.com/typro_image/image-20210511163129381.png" alt="image-20210511163129381" style="zoom:67%;" />
 
 使用**`VlNplot()`**进行展示
 
@@ -416,4 +416,4 @@ plots <- VlnPlot(immune.combine,features = c("ISG15", "CD3D", "IFI6"),split.by =
 wrap_plots(plots = plots, ncol = 1)
 ```
 
-<img src="G:\Desktop\s_note\data\picture\image-20210511165213954.png" alt="image-20210511165213954" style="zoom:67%;" />
+<img src="https://aironi.oss-cn-beijing.aliyuncs.com/typro_image/image-20210511165213954.png" alt="image-20210511165213954" style="zoom:67%;" />

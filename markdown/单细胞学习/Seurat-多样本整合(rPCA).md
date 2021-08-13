@@ -106,7 +106,7 @@ ifnb.immdata <- IntegrateData(ifnb.imm)
 DefaultAssay(ifnb.immdata) <- "integrated"
 #标准分析
 ifnb.immdata <- ScaleData(ifnb.immdata, verbose = FALSE)
-ifnb.immdata <- RunPCA(ifnb.immdata, npcs = 30, verbose = FALSE)
+    ifnb.immdata <- RunPCA(ifnb.immdata, npcs = 30, verbose = FALSE)
 ifnb.immdata <- RunUMAP(ifnb.immdata, reduction = "pca", dims = 1:30)
 ifnb.immdata <- FindNeighbors(ifnb.immdata, reduction = "pca", dims = 1:30)
 ifnb.immdata <- FindClusters(ifnb.immdata, resolution = 0.5)

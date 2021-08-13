@@ -183,7 +183,7 @@
 
 ### 分支原理示意图
 
-![image-20210429094151354](https://aironi.oss-cn-beijing.aliyuncs.com/typro_image/image-20210429094151354.png)
+![d](https://aironi.oss-cn-beijing.aliyuncs.com/typro_image/image-20210429094151354.png)
 
 ### 分支常用命令
 

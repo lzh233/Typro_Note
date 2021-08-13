@@ -13,6 +13,7 @@ install.packages("ape")
 install.packages("car")
 install.packages("nycflights13")
 install.packages("patchwork")
+install.packages("harmony")
 
 BiocManager::install("SingleCellExperiment")
 BiocManager::install("scater")
@@ -24,6 +25,7 @@ BiocManager::install("ggtreeExtra")
 BiocManager::install("phyloseq")
 BiocManager::install("treeio")
 BiocManager::install("glmGamPoi")
+BiocManager::install("MAST")
 
 #SingleR数据库
 MonacoImmuneData()

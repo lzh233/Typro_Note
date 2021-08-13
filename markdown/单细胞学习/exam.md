@@ -131,7 +131,7 @@ tsne_plot <- pbmc@reductions$tsne@cell.embeddings %>%
 tsne_plot
 ```
 
-<img src="G:\Desktop\s_note\data\picture\image-20210716185319157.png" alt="image-20210716185319157" style="zoom:80%;" />
+<img src="https://aironi.oss-cn-beijing.aliyuncs.com/typro_image/image-20210716185319157.png" alt="image-20210716185319157" style="zoom:80%;" />
 
 ```r
 #2、Generate an expression heatmap for the top 10 markers(10 each, total 30 genes) of Naive CD4+ T, CD8+ T and NK cells. (10)
@@ -159,7 +159,7 @@ colors <- colorRampPalette(c("purple","yellow"))(100)
 pheatmap::pheatmap(scale.data,annotation_col = top.sub,cluster_cols = T,color = colors,cutree_cols = 3,show_colnames = F)
 ```
 
-<img src="G:\Desktop\s_note\data\picture\image-20210716222918331.png" alt="image-20210716222918331" style="zoom:80%;" />
+<img src="D:\Desktop\s_note\data\picture\image-20210716222918331.png" alt="image-20210716222918331" style="zoom:80%;" />
 
 ### Q7 10X V2 chemistry has 10-bp long UMI but 12-bp in V3. What are the advantages and disadvantages of longer UMI? (10)
 
