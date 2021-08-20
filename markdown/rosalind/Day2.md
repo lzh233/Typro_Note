@@ -10,7 +10,7 @@ def fab(n):
         return 1
     else:
         return fab(n-1) + fab(n-2)
-print(fab(14))
+print(fab(10))
 ##-------------------output---------------------##
 55
 ```
