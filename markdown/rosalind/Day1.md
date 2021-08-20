@@ -11,20 +11,23 @@ Created on Wed Aug 18 09:06:06 2021
 @author: liuzihao
 
 transcription
-T>A A>U G>C C>G
+T>A
+A>U
+G>C
+C>G
 """
 class Transcription:
     def __init__(self):
-        self.__tran_dic = {"T":"a","A":"U","G":"c","C":"g"}
+        self.__tran_dic = {"A":"U"}
         self.__comp_dic = {"T":"a", "A":"t","G":"c","C":"g"}
         self.__dna_base = ["A","T","G","C"]
+        #self.__rna_base = ["A","U","G","C"]
     def get_tarn(self,seq):
         seq = str.upper(seq)
         if "U" in seq:
             print("Please input correct DNA sequence!")
         else:
-            for base in self.__dna_base:
-                seq = seq.replace(base,self.__tran_dic[base])
+            seq = seq.replace("A",self.__tran_dic["A"])
             return str.upper(seq)
 
     def get_complementation(self,seq,reverse = False):
@@ -45,7 +48,8 @@ class Transcription:
     def cotent_GC(self,seq):
         seq = str.upper(seq)
         return ((seq.count("G") + seq.count("C"))/len(seq))
-            
+       
+#seq = input("DNA sequence:")
 seq = "ATTGGGCCCC"
 def main():
     sequence = Transcription()
@@ -62,9 +66,8 @@ def main():
 
 if __name__ == '__main__':
     main()
-##-------------------output---------------------##
+##------------output-------------
 Transcription
-UAACCCGGGG
 Complementation
 TAACCCGGGG
 Reverse complementation
@@ -75,6 +78,5 @@ DNA Nucleotides
 
 GC cotene
 70.0%
-
 ```
 
