@@ -528,7 +528,7 @@ print(a.name)
 tom
 ```
 
-### 容器 Collections
+### 容器 Collections**
 
 Python 附带一个模块，它包含许多容器数据类型，名字叫作 `collections`
 
@@ -575,7 +575,7 @@ print(favorita_colors)
 
 #### counter
 
-Counter 是一个计数器，它可以帮助我们针对某项数据进行计数。比如它可以用来计算每个人喜欢多少种颜色：
+Counter 是一个计数器，它可以帮助我们针对某项数据进行计数，避免循环。比如它可以用来计算每个人喜欢多少种颜色：
 
 ```python
 aa = ["a","s","a",1,2,2,2,2]
@@ -617,5 +617,212 @@ deque([1, 2, 3])
 
 ```python
 d = deque(maxlen=30)
+```
+
+#### namedtuple
+
+一个元组是一个不可变的列表，你可以存储一个数据的序列，**它和命名元组（`namedtuples`）非常像，但有几个关键的不同**
+
+主要相似点是都不像列表，你不能修改元组中的数据。为了获取元组中的数据，你需要使用整数作为索引
+
+**`namedtuple`**: 把元组变成一个针对**简单任务的容器**。你**不必使用整数索引来访问一个 `namedtuples` 的数据**。你可以像**字典**（`dict`）一样访问 `namedtuples`，但 `namedtuples` 是不可变的。
+
+```python
+import collections
+#几种不同的创建方式 喜欢第二种
+message = collections.namedtuple("person_mesage","name age hobby work code")
+#message1 = collections.namedtuple("person_mesage",['name','age','hobby','work','code'])
+#message3 = collections.namedtuple("person_mesage","name,age,hobby,work,code")
+
+message1 = message(name = ["Tom","Tom2"],age = 12,hobby="Game",work="coder",code = "R")
+print(message1)
+print(message1.name)
+print(message1.age)
+print(message1.code)
+print(message1.hobby)
+#output
+person_mesage(name=['Tom', 'Tom2'], age=12, hobby='Game', work='coder', code='R')
+['Tom', 'Tom2']
+12
+R
+Game
+```
+
+由上述例子可以知道**一个命名元组（`namedtuple`）有两个必需的参数。它们是元组名称和字段名称**，属性值在 `namedtuple` 中是不可变的，既使用整数索引，也可以使用名称来访问
+
+```python
+message1 = collections.namedtuple("person_mesage",['name','age','hobby','work','code'])
+message2 = message1(name = ["Tom","Tom2"], age = 12,hobby = "Game",work = "coder", code = "R")
+print(message2[0])
+print(message2.name)
+#output
+['Tom', 'Tom2']
+['Tom', 'Tom2']
+```
+
+可以将一个命名元组转换为字典, `_asdict()`
+
+```python
+print(message2._asdict())
+#output
+{'name': ['Tom', 'Tom2'], 'age': 12, 'hobby': 'Game', 'work': 'coder', 'code': 'R'}
+```
+
+### enumerate
+
+枚举（`enumerate`）是 Python 内置函数。可以将列表转成`[(index:[list[0]]),....]`
+
+```python
+a = ["a","b","c"]
+for k,v in enumerate(a):
+    print(k,v)
+#output
+0 a
+1 b
+2 c
+#也可以指定索引开始的数字
+1 a
+2 b
+3 c
+```
+
+### 对象自省
+
+自省`（introspection）`，在计算机编程领域里，是指在运行时来判断一个对象的类型的能力。
+
+#### dir
+
+返回对象所有的方法和属性
+
+```python
+a = ["a","b","c"]
+print(dir(a))
+#output
+['__add__', '__class__', '__contains__', '__delattr__', '__delitem__', '__dir__', ...... 'append', 'clear', 'copy', 'count', 'extend', 'index', 'insert', 'pop', 'remove', 'reverse', 'sort']
+```
+
+#### type
+
+返回对象的类型
+
+```python
+print(type(a))
+#output
+<class 'list'>
+```
+
+### 推导式 Comprehension
+
+#### 列表解析
+
+结构是在一个中括号里包含一个表达式，然后是一个 `for` 语句，然后是0个或多个 `for` 或者 `if` 语句。那个表达式可以是任意的，意思是你可以在列表中放入任意类型的对象。返回结果将是一个新的列表
+
+```python
+lst = [a**2 for a in range(5) if a % 3 == 0]
+lst2 = [a**2 for a in range(5)]
+print(f"{lst}\n{lst2}")
+#print
+[0, 9]
+[0, 1, 4, 9, 16]
+```
+
+#### 集合解析
+
+与列表一致，`[]`改为`{}`即可
+
+```python
+lst = {a**2 for a in range(5) if a % 3 == 0}
+lst2 = {a**2 for a in [1,1,1,1,1,1]}
+print(f"{lst}\n{lst2}")
+#output
+{0, 9}
+{1}
+```
+
+#### 字典解析
+
+用的少，与列表 集合基本一致，只不过字典要注意输出的值为`k:v`形式
+
+```python
+#键值对互换
+a = {"Tom":"name",12:"age","coder":"work"}
+b = {v:k for k,v in a.items()}
+print(b)
+#output
+{'name': 'Tom', 'age': 12, 'work': 'coder'}
+
+#对每个值加10
+c = {"A":1,"B":2,"C":3}
+c = {k:v+10 for k,v in c.items()}
+print(c)
+#output
+{'A': 11, 'B': 12, 'C': 13}
+```
+
+### __getitem__
+
+在类中创建`__getitem__`方法，将允许使用索引的方式访问属性
+
+```python
+class test:
+    def __init__(self):
+        self.Tom = {
+            "name" : "Tom",
+            "age" : 12
+        }
+    def __getitem__(self,i):
+        return self.Tom[i]
+
+a = test()
+print(a['name'])
+#output
+Tom
+```
+
+### with
+
+```python
+f = open('photo.jpg', 'r+')
+jpgdata = f.read()
+f.close()
+```
+
+`open` 的返回值是一个文件句柄，从操作系统托付给你的 Python 程序。一旦你处理完文件，你会想要归还这显式地调用 `close` 关闭了这个文件句柄，但前提是只有在 read 成功的情况下。如果有任意异常正好在 `f = open(...)` 之后产生，`f.close()` 将不会被调用个文件句柄，只有这样你的程序不会超出一次能打开的文件句柄的数量上限。
+
+为了确保不管异常是否触发，文件都能关闭，我们将其包裹成一个 `with` 语句:
+
+```python
+with open('photo.jpg', 'r+') as f:
+    jpgdata = f.read()
+```
+
+`mode` 打开模式见前
+
+### for-else语句
+
+`else`从句会在循环**正常结束**的时候执行, `else`可以判断循环结束是因为以下哪些原因导致的
+
+- 当一个元素被找到，`break` 被触发。
+
+- 是循环结束。  
+
+```python
+for n in range(2, 10):
+    for x in range(2, n):
+        if n % x == 0:
+            print(n, 'equals', x, '*', n / x)
+            break
+    else:
+        # loop fell through without finding a factor
+        print(n, 'is a prime number')
+#output
+2 is a prime number
+3 is a prime number
+4 equals 2 * 2.0
+5 is a prime number
+6 equals 2 * 3.0
+7 is a prime number
+8 equals 2 * 4.0
+9 equals 3 * 3.0
 ```
 
