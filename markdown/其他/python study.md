@@ -859,3 +859,6 @@ subprocess.check_call('ls -1wd',shell=True)
 #输出
 subprocess.CalledProcessError: Command 'ls -1wd' returned non-zero exit status 2.
 ```
+
+### logging包
+
