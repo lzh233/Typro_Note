@@ -16,7 +16,7 @@ https://github.com/singleron-RD/CeleScope/pull/56/files
 
 使用分组求和计算即可
 
-<img src="C:\Users\liuzihao\AppData\Roaming\Typora\typora-user-images\image-20210913141220805.png" alt="image-20210913141220805" style="zoom:80%;" />
+<img src="https://aironi.oss-cn-beijing.aliyuncs.com/typro_image/image-20210913141220805.png" alt="image-20210913141220805" style="zoom:80%;" />
 
 ```python
         #get the sum of virus
