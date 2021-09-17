@@ -2,7 +2,7 @@
 
 ## 描述
 
-把https://github.com/singleron-RD/CeleScope/pull/59 这个功能抽出来单独变成一个脚本，这样已经跑完的样本直接就可以出结果----将`work04`的功能单独写成一个脚本, 统计已经完成的样本
+把https://github.com/singleron-RD/CeleScope/pull/59 这个功能抽出来单独变成一个脚本，这样已经跑完的样本直接就可以出结果----将`work04`的功能单独写成一个脚本, 统计已经完成的样本，并且增加每个细胞的cluster来源信息(9.14)
 
 ## 脚本位置
 
@@ -10,9 +10,7 @@
 
 /Personal/liuzihao/work/vid_sumarrize
 
-## 使用方法：
-
-## get_vid_summarize.py
+## 使用方法
 
 ## environment
 
@@ -27,7 +25,7 @@ Test data: /SGRNJ03/randd/user/liuzihao/vid_sumarrize/snp_data
 
 ## options
 
-`--data_dir`: The directory which saved the celescope snp results, make sure this directory only save the data of snp results, if not, please use  `--manual_sample_list` and `--sample_list_dir` to provide a sample name list.
+`--data_dir`: The directory which saved the celescope snp results, make sure this directory only save the data of snp results, if not please use  `--manual_sample_list` and `--sample_list_dir` to provide a sample name list.
 
  `--results_dir` : Output directory.
 
@@ -81,12 +79,11 @@ Format
 {sample name}_summarize_capture_vid.tsv 
 """
 $ cat snp1_summarize_capture_vid.tsv 
-VID	nCell_with_read_count	with_ref_read	with_variant_read	Protein
-1	3	1	2	H27H
-2	3	2	1	Y4D
-3	2	1	1	E522K
-4	2	1	1	S607A
-5	2	1	1	R603R
+VID	nCell_with_read_count	with_ref_read	with_variant_read protein cluster_1 cluster_2 ...
+1	3	1	2	protein1 1	2 ...
+2	3	2	1	protein2 1	2 ...
+3	2	1	1	protein3 1	1 ...
+4	2	1	1	protein4 1	1 ...
 ......
 ```
 

@@ -46,6 +46,8 @@ Chrom	Pos	Alleles	VID	CID	Gene	mRNA	Protein	COSMIC	nCell
 
 脚本，
 
+**位置：/Personal/liuzihao/work/script/extract_snp_barcode/**
+
 ```python
 import pandas as pd
 import argparse
