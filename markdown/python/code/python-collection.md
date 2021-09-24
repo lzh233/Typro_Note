@@ -178,4 +178,3 @@ print(cat1._asdict())
 OrderedDict([('name', ['AChangQiuJun', 'XueDing', 'ChangZai']), ('age', 5), ('id', '003')])
 ```
 
-### 
