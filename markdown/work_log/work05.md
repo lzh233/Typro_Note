@@ -2,7 +2,19 @@
 
 ## 描述
 
-把https://github.com/singleron-RD/CeleScope/pull/59 这个功能抽出来单独变成一个脚本，这样已经跑完的样本直接就可以出结果----将`work04`的功能单独写成一个脚本, 统计已经完成的样本，并且增加每个细胞的cluster来源信息(9.14)
+把https://github.com/singleron-RD/CeleScope/pull/59 这个功能抽出来单独变成一个脚本，这样已经跑完的样本直接就可以出结果----将`work04`的功能单独写成一个脚本, 统计已经完成的样本，**并且增加每个细胞的cluster来源信息 (9.14)**
+
+**脚本修改(9.29):  **
+
+**问题：  正常情况不会出现no_cluster ,结果却出现了**
+
+**将cluster信息的来源改为转录组的数据，解决`no_cluster`问题**
+
+**出问题原因是snp的tsne的cluster信息是仅仅包含了有突变信息的细胞，并非全部细胞，所以出现了`no_cluster`**
+
+**已经修复**，更换tsne文件
+
+![image-20210930170052718](https://aironi.oss-cn-beijing.aliyuncs.com/typro_image/image-20210930170052718.png)
 
 ## 脚本位置
 

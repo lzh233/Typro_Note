@@ -1,81 +1,244 @@
-# work-9.23
+# work-9.27
 
-Q
+##  10X tag数据拆分
 
-```apl
-普通转录组引物和靶向引物是否会竞争性捕获细胞的目标基因？ 需要看一下对应细胞两种组学的UMI和覆盖深度的关系，进行评估一下；
-（同一样本PolyT和靶向bead对比数据）
+### 数据
 
-因为流程以转录组为模板进行靶向细胞统计，如何解释：1、转录组数据测到基因表达，而靶向没检测到覆盖；2、转录组数据没有测到表达，而靶向检测到覆盖；3、转录组数据和靶向数据都没有检测到基因。（细胞系数据做统计）
-
-从标准分析报告中如何看出整体的检测情况，理论上应该是：1、靶向捕获区域突变位点的统计；2、突变位点细胞检出情况（阴性和阳性，NA型：没有覆盖的细胞）占比；3、共同拥有的突变 
-
-细胞数目和流程运行时间，运行资源消耗的对应关系（以数据量，还是细胞数目为统计标准，需要产品中心明确以便于后续成本核算）
-
-对于一个靶向区域同时检测出多个突变信息的情况，如何区分是噪音还是低频突变或者可变剪切和RNA编辑照成？ 如何在一个新的样本中得出这样的信息？（Bulk信息的对比）
-
-靶向富集区域的富集reads的占比是否需要给一个指标阈值进行衡量数据质量或者实验质量？（≥70%？）
-```
-
-Data
-转录组
+三个文件分别为
 
 ```
-/SGRNJ05/RandD4/RD20051303_Panel/20201215/drug_S_H1975_203_zl
-/SGRNJ05/RandD4/RD20051303_Panel/20201215/polyT_H1975_ZL
-```
-富集文库
-```
-/SGRNJ05/RandD4/RD20051303_Panel/20201216_2/drug_S_H1975_203_TS
-/SGRNJ05/RandD4/RD20051303_Panel/20201216_2/polyT_H1975_TS
+10X-HCC19-Index_S1_L001_R1_001.fastq.gz
+10X-HCC19-Index_S1_L001_R2_001.fastq.gz
+HCC19-10x-valid-barcode.txt
 ```
 
+### 数据内容查看
 
+10X-HCC19-Index_S1_L001_R1_001.fastq.gz
 
-​	Q1:
+**barcode + UMI序列**	C16U12
 
-```
-普通转录组引物和靶向引物是否会竞争性捕获细胞的目标基因？ 需要看一下对应细胞两种组学的UMI和覆盖深度的关系，进行评估一下；
-（同一样本PolyT和靶向bead对比数据）
-不同组学的UMI之间 reads之间没有相关关系
-```
-
-<img src="https://aironi.oss-cn-beijing.aliyuncs.com/typro_image/image-20210924144128864.png" alt="image-20210924144128864" style="zoom: 50%;" />
-
-<img src="https://aironi.oss-cn-beijing.aliyuncs.com/typro_image/image-20210924144159522.png" alt="image-20210924144159522" style="zoom: 50%;" />
-
-```
-因为流程以转录组为模板进行靶向细胞统计，如何解释：1、转录组数据测到基因表达，而靶向没检测到覆盖；2、转录组数据没有测到表达，而靶向检测到覆盖；3、转录组数据和靶向数据都没有检测到基因。（细胞系数据做统计）
-```
-
-将基因分类？ 分成三种 (这个基因检测到的评判标准是什么?)
-
-转录组数据测到基因表达，靶向没检测到覆盖
-
-转录组数据没有测到表达，而靶向检测到覆盖
-
-转录组数据和靶向数据都没有检测到基因
-
-```ap
-从标准分析报告中如何看出整体的检测情况，理论上应该是：1、靶向捕获区域突变位点的统计；2、突变位点细胞检出情况（阴性和阳性，NA型：没有覆盖的细胞）占比；3、共同拥有的突变 
+```shell
+$ zcat 10X-HCC19-Index_S1_L001_R1_001.fastq.gz | head -n 8
+@A00358:556:H3WYYDSX2:3:1101:1787:1110 1:N:0:TAAGGCGA+AAGGCTAT
+TCAGCCTAGGCGAAGGACTCTCCTCGAG
++
+FF:FFFFFFFFFFFFFFFFFFFFFFFFF
+@A00358:556:H3WYYDSX2:3:1101:2003:1110 1:N:0:TAAGGCGA+AAGGCTAT
+CAGCGTGTCTACCCACGCCTGTCCTGCA
++
+FFFFFFF:FFFFFFFFFFFFFFFFFFFF
 ```
 
-首先这个捕获的区域是哪到哪? 如何判断是检出了 
+10X-HCC19-Index_S1_L001_R2_001.fastq.gz
 
-在这个区域内的突变位点里，可以得到每个突变位点对此的barcode
+**linker + tag序列**	L25C15
 
-检出位点的barcode且为阳性 
-
-未检出为阴性 
-
-什么都没检出的细胞为未覆盖 
-
-检出了其他的位点为NA型 
-
-统计几种类型的占比
-
-```py
-靶向富集区域的富集reads的占比是否需要给一个指标阈值进行衡量数据质量或者实验质量？（≥70%？）
+```shell
+$ zcat 10X-HCC19-Index_S1_L001_R2_001.fastq.gz | head -n 8
+@A00358:556:H3WYYDSX2:3:1101:1787:1110 2:N:0:TAAGGCGA+AAGGCTAT
+GTTGTCAAGATGCTACCGTTCAGAGTAAGAGCCCGGCAAGAAAAAAAAAAAAAAAAAAAAAAAAAACTCGAGGAGATTACTTCGCCTAGGC
++
+FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF:FFFF:FFFF:FFFF,,::,::,:,,,,:FF:,F,,:FF,
+@A00358:556:H3WYYDSX2:3:1101:2003:1110 2:N:0:TAAGGCGA+AAGGCTAT
+GTTGTCAAGATGCTACCGTTCAGAGTACGAGCCCAAAAAAAAAAAAAAAAAAAAAAAAAAAAATGCAGGAAAGGCGGGGGTAGACCCGGGG
++
+FFFFFFFFFFFFFFFFFFFFFFF:FFF,FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF,F:,,F,:,,FF,F,FF::,,,,,,,,,,
 ```
 
-统计指定区域cover的reads数量? 占所有reads的百分比？
+HCC19-10x-valid-barcode.txt 
+
+**barcode序列**
+
+```shell
+$ head HCC19-10x-valid-barcode.txt 
+barcode
+AAACCCAAGAGGGTCT
+AAACCCAAGCATCAGG
+AAACCCAAGCTACTAC
+AAACCCAAGTACTGTC
+AAACCCAAGTGCGACA
+AAACCCACACCTATCC
+AAACCCACAGAGATTA
+AAACCCAGTAGGTAGC
+AAACCCAGTATGGGAC
+```
+
+### tag相关数据
+
+ tag_barcode.fasta 
+
+```shell
+$ head tag_barcode.fasta 
+>CLindex_TAG_1
+CGTGTTAGGGCCGAT
+>CLindex_TAG_2
+GAGTGGTTGCGCCAT
+>CLindex_TAG_3
+AAGTTGCCAAGGGCC
+>CLindex_TAG_4
+TAAGAGCCCGGCAAG
+>CLindex_TAG_5
+TGACCTGCTTCACGC
+```
+
+tag_linker.fasta 
+
+```shell
+$ cat tag_linker.fasta 
+>CLindex_LINKER
+GTTGTCAAGATGCTACCGTTCAGAG
+```
+### 需求
+
+使用celescope tag流程拆分。
+read1 是10X的文库结构, 16bp barcode + 12bp UMI
+read2 是Clindex的文库结构。L25C15
+
+### 拆分命令和map文件
+
+```shell
+#!/bin/bash
+multi_tag \
+    --mapfile ./mapfile.tag.map\
+    --barcode_fasta ./tag_seq/tag_barcode.fasta\
+    --linker_fasta ./tag_seq/tag_linker.fasta\
+    --chemistry customized\
+    --pattern C16U12\
+    --fq_pattern L25C15\
+    --mod shell\
+    --thread 8
+```
+
+```shell
+$ cat mapfile.tag.map 
+10X-HCC19-Index_S1_L001	./fasta	10X-HCC19	./match_dir_tag
+```
+
+match_dir 结构 先跑一下barcode步骤得到`10X-HCC19_2.fq`,  `barcodes.tsv`**是提供的**
+
+```shell
+$ tree ./match_dir_tag/
+./match_dir_tag/
+├── 01.barcode
+│   └── 10X-HCC19_2.fq
+├── 05.count
+│   └── 10X-HCC19_match_dir_matrix_10X
+│       └── barcodes.tsv
+└── 06.analysis
+    ├── markers.tsv
+    └── tsne_coord.tsv
+```
+
+### celescope相关文档
+
+`--mod` mod, sjm or shell
+
+`--mapfile` tsv file, 4 columns:
+                1st col: LibName;
+                2nd col: DataDir;
+                3rd col: SampleName;
+                4th col: optional;
+
+`--rm_files` remove redundant fq.gz and bam after running
+
+`--steps_run` Steps to run. Multiple Steps are separated by comma.
+
+`--outdir` Output directory.
+
+`--thread` Thread to use.
+
+`--debug` If this argument is used, celescope may output addtional file for debugging.
+
+`--chemistry` Predefined (pattern, barcode whitelist, linker whitelist) combinations. Can be one of:  
+
+- `auto` Default value. Used for Singleron GEXSCOPE libraries >= scopeV2 and automatically detects the combinations.  
+- `scopeV1` Used for legacy Singleron GEXSCOPE scopeV1 libraries.  
+- `customized` Used for user defined combinations. You need to provide `pattern`, `whitelist` and `linker` at the 
+  same time.
+
+`--pattern` The pattern of R1 reads, e.g. `C8L16C8L16C8L1U12T18`. The number after the letter represents the number 
+        of bases.  
+
+- `C`: cell barcode  
+- `L`: linker(common sequences)  
+- `U`: UMI    
+- `T`: poly T
+
+`--whitelist` Cell barcode whitelist file path, one cell barcode per line.
+
+`--linker` Linker whitelist file path, one linker per line.
+
+`--lowQual` Default 0. Bases in cell barcode and UMI whose phred value are lower than lowQual will be regarded as low-quality bases.
+
+`--lowNum` The maximum allowed lowQual bases in cell barcode and UMI.
+
+`--nopolyT` Outputs R1 reads without polyT.
+
+`--noLinker` Outputs R1 reads without correct linker.
+
+`--allowNoPolyT` Allow valid reads without polyT.
+
+`--allowNoLinker` Allow valid reads without correct linker.
+
+`--gzip` Output gzipped fastq files.
+
+`--adapter_fasta` Addtional adapter fasta file.
+
+`--minimum_length` Default `20`. Discard processed reads that are shorter than LENGTH.
+
+`--nextseq_trim` Default `20`. Quality trimming of reads using two-color chemistry (NextSeq). 
+Some Illumina instruments use a two-color chemistry to encode the four bases. 
+This includes the NextSeq and the NovaSeq. 
+In those instruments, a ‘dark cycle’ (with no detected color) encodes a G. 
+However, dark cycles also occur when sequencing “falls off” the end of the fragment.
+The read then contains a run of high-quality, but incorrect “G” calls at its 3’ end.
+
+`--overlap` Default `10`. Since Cutadapt allows partial matches between the read and the adapter sequence,
+short matches can occur by chance, leading to erroneously trimmed bases. 
+For example, roughly 0.25 of all reads end with a base that is identical to the first base of the adapter. 
+To reduce the number of falsely trimmed bases, the alignment algorithm requires that 
+at least {overlap} bases match between adapter and read.
+
+`--insert` Default `150`. Read2 insert length.
+
+`--fq_pattern` Required. R2 read pattern. The number after the letter represents the number of bases.         
+`L` linker(common sequences)  
+`C` tag barcode
+
+`--barcode_fasta` Required. Tag barcode fasta file. It will check the mismatches between tag barcode 
+sequence in R2 reads with all tag barcode sequence in barcode_fasta. 
+It will assign read to the tag with mismatch < len(tag barcode) / 10 + 1. 
+If no such tag exists, the read is classified as invalid.
+
+```
+>tag_0
+GGGCGTCTGTGACCGCGTGATACTGCATTGTAGACCGCCCAACTC
+>tag_1
+TTCCTCCAGAGGAGACCGAGCCGGTCAATTCAGGAGAACGTCCGG
+>tag_2
+AGGGCTAGGCGTGTCATTTGGCGAGGTCCTGAGGTCATGGAGCCA
+>tag_3
+CACTGGTCATCGACACTGGGAACCTGAGGTGAGTTCGCGCGCAAG
+```
+
+`--linker_fasta` Optional. If provided, it will check the mismatches between linker sequence in R2 reads 
+with all linker sequence in linker_fasta. If no mismatch < len(linker) / 10 + 1, the read is classified as invalid.
+
+`--UMI_min` Default='auto'. Minimum UMI threshold. Cell barcodes with valid UMI < UMI_min are classified as *undeterminded*.
+
+`--dim` Default=1. Tag dimentions. Usually we use 1-dimentional tag.
+
+`--SNR_min` Default='auto'. Minimum signal-to-noise ratio. 
+Cell barcodes with UMI >=UMI_min and SNR < SNR_min are classified as *multiplet*.
+
+`--combine_cluster` Conbine cluster tsv file.
+
+`--coefficient` Default=0.1. If `SNR_min` is 'auto', minimum signal-to-noise ratio is calulated as 
+`SNR_min = max(median(SNRs) * coefficient, 2)`. 
+Smaller `coefficient` will cause less *multiplet* in the tag assignment.
+
+`--split_fastq` If used, will split scRNA-Seq fastq file according to tag assignment.
+
+`--split_matrix` If used, will split scRNA-Seq matrix file according to tag assignment.
+

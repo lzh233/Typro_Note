@@ -4,6 +4,12 @@
 
 report添加检出病毒的细胞数，和每个cluster含有的病毒的细胞数
 
+**9.29 multi_capture_virus  bug 百分比小100倍 原因是百分比计算后忘记*100**
+
+已经修复 但是没有PR
+
+<img src="https://aironi.oss-cn-beijing.aliyuncs.com/typro_image/image-20210930170541785.png" alt="image-20210930170541785" style="zoom:80%;" />
+
 ## 解决流程
 
 PR过程

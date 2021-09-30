@@ -72,7 +72,7 @@ next(test1)
   KeyError
   ```
 
-  <img src="https://aironi.oss-cn-beijing.aliyuncs.com/typro_image/image-20210914105150142.png" alt="image-20210914105150142" style="zoom:80%;" />
+  <img src="https://aironi.oss-cn-beijing.aliyuncs.com/typro_image/image-20210914105150142.png" alt="image-20210914105150142" style="zoom:70%;" />
 
 ### 3. 使用zip函数同时对多个迭代器实现迭代
 

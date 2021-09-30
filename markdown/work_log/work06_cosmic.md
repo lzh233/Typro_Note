@@ -85,3 +85,6 @@ main()
 
 
 
+脚本位置
+
+/SGRNJ03/randd/user/liuzihao/cosmic_find
