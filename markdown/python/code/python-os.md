@@ -55,6 +55,11 @@ print(path3)#当前文件的上上层目录的绝对路径
 
 curpath = os.path.dirname(os.path.realpath(__file__)) # 当前文件夹的路径
 
+#实例
+import os
+path2=os.path.dirname(os.path.realpath(__file__))
+print(path2)
+
 """
 语法：os.path.dirname(path) 
 
