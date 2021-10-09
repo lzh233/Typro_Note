@@ -39,3 +39,36 @@ print(os.path.isfile('log.py'))
 print(os.path.exists('C:\\Python25\\abc.txt'))
 ```
 
+[os.path.dirname](https://www.cnblogs.com/annawong/p/10417257.html)
+
+```python
+import os
+
+path1=os.path.abspath(__file__)
+print(path1)#当前文件的绝对路径
+
+path2=os.path.dirname(os.path.abspath(__file__))
+print(path2)#当前文件的上一层目录的绝对路径
+
+path3=os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+print(path3)#当前文件的上上层目录的绝对路径
+
+curpath = os.path.dirname(os.path.realpath(__file__)) # 当前文件夹的路径
+
+"""
+语法：os.path.dirname(path) 
+
+功能：去掉文件名，返回目录 
+
+ 
+
+__file__ 为内置属性，表示当前文件的path
+
+os.path.dirname((__file__) ：指的是，得到当前文件的绝对路径，是去掉脚本的文件名，只返回目录。
+
+os.path.dirname(os,path.realname(__file__))：指的是，获得你刚才所引用的模块所在的绝对路径
+"""
+```
+
+
+

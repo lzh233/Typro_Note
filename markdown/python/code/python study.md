@@ -396,9 +396,34 @@ print(set1.difference(set2))
 
 `property` 装饰器用于类中的函数，使得我们可以像访问属性一样来获取一个函数的返回值。
 
+```python
+class XiaoMing:
+    first_name = '明'
+    last_name = '小'
+
+    @property
+    def full_name(self):
+        return self.last_name + self.first_name
+
+xiaoming = XiaoMing()
+print(xiaoming.full_name)
+```
+
 `staticmethod` 装饰器同样是用于类中的方法，这表示这个方法将会是一个静态方法，意味着该方法可以直接被调用无需实例化，但同样意味着它没有 `self` 参数，也无法访问实例化后的对象。
 
 `classmethod` 依旧是用于类中的方法，这表示这个方法将会是一个类方法，意味着该方法可以直接被调用无需实例化，但同样意味着它没有 `self` 参数，也无法访问实例化后的对象。相对于 `staticmethod` 的区别在于它会接收一个指向类本身的 `cls` 参数。
+
+```python
+class XiaoMing:
+    name = '小明'
+
+    @classmethod
+    def say_hello(cls):
+        print('同学你好， 我是' + cls.name)
+        print(cls)
+
+XiaoMing.say_hello()
+```
 
 https://www.zhihu.com/question/26930016/answer/1904166977
 
@@ -467,7 +492,6 @@ print(b)
 #### 解决办法1
 
 ```python
-
 def add_to(num, target=[]):
     target.append(num)
     return target
@@ -686,5 +710,16 @@ for n in range(2, 10):
 9 equals 3 * 3.0
 ```
 
-### 
+###  hypot()
+
+返回欧几里德范数 sqrt(x*x + y*y)  (计算直角三角形边长)
+
+```python
+import math
+
+math.hypot(x, y)
+math.hypot(3, 4)
+#output 
+5
+```
 
